@@ -7,7 +7,7 @@ class Solution {
             if(nums[i] == 0) count--;
             else count++;
             if(hash.get(count) != null){
-                maxLen = Math.max(maxLen, i -hash.get(count));
+                maxLen = Math.max(maxLen, i - hash.get(count));
             }else{
                 hash.put(count , i);
             }

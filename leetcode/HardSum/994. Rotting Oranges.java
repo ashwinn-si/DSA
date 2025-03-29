@@ -8,16 +8,16 @@ class Solution {
     }
 
     private void freshOrangeToRottenOrange(Queue<Corr> rottenPosition, int[][] matrix, int R, int C, int freshOranges[]){
-            Corr currCorr = rottenPosition.poll();
-            int i = currCorr.i , j = currCorr.j ;
-            int offsets[][] = new int[][]{{0,1},{0,-1},{-1,0},{1,0}};
-            for(int k = 0 ; k < 4 ; k++){
-                if(boundaryChecker(R , C, i+offsets[k][0] , j+offsets[k][1]) && isFreshOrange(i+offsets[k][0] , j+offsets[k][1] , matrix)){
-                    matrix[i+offsets[k][0]][ j+offsets[k][1]] = 2;
-                    rottenPosition.offer(new Corr(i + offsets[k][0], j+offsets[k][1]));
-                    freshOranges[0]--;
-                }
+        Corr currCorr = rottenPosition.poll();
+        int i = currCorr.i, j = currCorr.j;
+        int offsets[][] = new int[][]{{0,1},{0,-1},{-1,0},{1,0}};
+        for(int k = 0 ; k < 4 ; k++){
+            if(boundaryChecker(R , C, i+offsets[k][0] , j+offsets[k][1]) && isFreshOrange(i+offsets[k][0] , j+offsets[k][1] , matrix)){
+                matrix[i+offsets[k][0]][ j+offsets[k][1]] = 2;
+                rottenPosition.offer(new Corr(i + offsets[k][0], j+offsets[k][1]));
+                freshOranges[0]--;
             }
+        }
     }
 
     public int orangesRotting(int[][] matrix) {

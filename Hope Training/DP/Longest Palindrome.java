@@ -1,3 +1,8 @@
+
+/*
+Given two strings return the longest palindrome in the string
+ */
+
 import java.util.*;
 
 public class sample {

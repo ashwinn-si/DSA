@@ -1,32 +1,25 @@
 class Solution {
-  private Integer dp[][];
-  private int R, C;
+  Integer dp[][];
 
-  private boolean isValid(int currR, int currC) {
-    return (0 <= currR && currR < R && 0 <= currC && currC < C);
-  }
-
-  private int dfs(int currR, int currC) {
-    if (currR == R - 1 && currC == C - 1) {
-      return 1;
-    }
-    if (!isValid(currR, currC)) {
+  public int dfs(int curr_row, int curr_col, int R, int C) {
+    if (curr_row >= R || curr_col >= C) {
       return 0;
     }
-    if (dp[currR][currC] != null)
-      return dp[currR][currC];
-
-    int bottom = dfs(currR + 1, currC);
-    int right = dfs(currR, currC + 1);
-
-    dp[currR][currC] = bottom + right;
-    return bottom + right;
+    if (dp[curr_row][curr_col] != null) {
+      return dp[curr_row][curr_col];
+    }
+    if (curr_row == R - 1 && curr_col == C - 1) {
+      return 1;
+    }
+    int result = 0;
+    result += dfs(curr_row + 1, curr_col, R, C);
+    result += dfs(curr_row, curr_col + 1, R, C);
+    dp[curr_row][curr_col] = result;
+    return result;
   }
 
   public int uniquePaths(int m, int n) {
     dp = new Integer[m][n];
-    R = m;
-    C = n;
-    return dfs(1, 0) + dfs(0, 1);
+    return (dfs(0, 0, m, n));
   }
 }

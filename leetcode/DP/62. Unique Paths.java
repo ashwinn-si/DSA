@@ -1,25 +1,17 @@
 class Solution {
-  Integer dp[][];
+  public int uniquePaths(int R, int C) {
+    int[][] dp = new int[R][C];
 
-  public int dfs(int curr_row, int curr_col, int R, int C) {
-    if (curr_row >= R || curr_col >= C) {
-      return 0;
-    }
-    if (dp[curr_row][curr_col] != null) {
-      return dp[curr_row][curr_col];
-    }
-    if (curr_row == R - 1 && curr_col == C - 1) {
-      return 1;
-    }
-    int result = 0;
-    result += dfs(curr_row + 1, curr_col, R, C);
-    result += dfs(curr_row, curr_col + 1, R, C);
-    dp[curr_row][curr_col] = result;
-    return result;
-  }
+    for (int i = 0; i < R; i++)
+      dp[i][0] = 1;
+    for (int j = 0; j < C; j++)
+      dp[0][j] = 1;
 
-  public int uniquePaths(int m, int n) {
-    dp = new Integer[m][n];
-    return (dfs(0, 0, m, n));
+    for (int i = 1; i < R; i++) {
+      for (int j = 1; j < C; j++) {
+        dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+      }
+    }
+    return dp[R - 1][C - 1];
   }
 }

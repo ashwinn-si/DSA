@@ -1,0 +1,28 @@
+//IMP Only pass for positive number not negative
+class Solution {
+    public int minimumDifference(int[] nums) {
+        int target = 0;
+        int N = nums.length;
+        for(int num: nums){
+            target += num;
+        }
+        boolean dp[][] = new boolean[N][target + 1];
+        for(int index = 0; index < N; index++){
+            dp[index][0] = true;
+        }
+        int result = Integer.MAX_VALUE;
+        if(nums[0] >= 0 && nums[0] <= target) dp[0][nums[0]] = true;
+        for(int index = 1; index < N; index++){
+            for(int K = 1; K <= target; K++){
+                dp[index][K] = dp[index - 1][K];
+                if(K >= nums[index]){
+                    dp[index][K] |= dp[index - 1][K - nums[index]];
+                }
+                if(dp[index][K]){
+                    result = Math.min(Math.abs(K - (target - K)), result);
+                }
+            }
+        }
+        return result;
+    }
+}

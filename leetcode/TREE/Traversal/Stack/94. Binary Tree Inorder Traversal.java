@@ -1,18 +1,24 @@
 class Solution {
-  List<Integer> tree;
-
-  void dfs(TreeNode node) {
-    if (node == null) {
-      return;
-    }
-    dfs(node.left);
-    tree.add(node.val);
-    dfs(node.right);
-  }
-
   public List<Integer> inorderTraversal(TreeNode root) {
-    tree = new ArrayList<>();
-    dfs(root);
-    return tree;
+    List<Integer> result = new ArrayList<>();
+    Stack<TreeNode> stack = new Stack<>();
+    if (root == null)
+      return result;
+    TreeNode currNode = root;
+    while (true) {
+      if (currNode != null) {
+        stack.add(currNode);
+        currNode = currNode.left;
+      } else {
+        if (stack.isEmpty()) {
+          break;
+        }
+        currNode = stack.pop();
+        result.add(currNode.val);
+        currNode = currNode.right;
+      }
+    }
+    return result;
   }
+
 }

@@ -1,18 +1,28 @@
 class Solution {
-  List<Integer> tree;
-
-  void dfs(TreeNode node) {
-    if (node == null) {
-      return;
-    }
-    dfs(node.left);
-    dfs(node.right);
-    tree.add(node.val);
-  }
-
   public List<Integer> postorderTraversal(TreeNode root) {
-    tree = new ArrayList<>();
-    dfs(root);
-    return tree;
+    List<Integer> result = new ArrayList<>();
+    TreeNode currNode = root;
+    Stack<TreeNode> stack = new Stack<>();
+    while (currNode != null || !stack.isEmpty()) {
+      if (currNode != null) {
+        stack.push(currNode);
+        currNode = currNode.left;
+      } else {
+        TreeNode temp = stack.peek().right;
+        if (temp == null) {
+          temp = stack.peek();
+          stack.pop();
+          result.add(temp.val);
+          while (!stack.isEmpty() && temp == stack.peek().right) {
+            temp = stack.peek();
+            stack.pop();
+            result.add(temp.val);
+          }
+        } else {
+          currNode = temp;
+        }
+      }
+    }
+    return result;
   }
 }

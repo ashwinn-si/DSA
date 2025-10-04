@@ -1,0 +1,1 @@
+select emp.name, sum(b.bonus) as bonus from Employee emp left join Bonus b on emp.empId = b.empId group by emp.empId having bonus < 1000 or bonus IS NULL;

@@ -1,0 +1,2 @@
+Find the query in odd and even positions
+longest consicutive ones and zero's[code forces]

@@ -1,0 +1,51 @@
+import java.util.*;
+
+public class Main {
+  static int lookUp(int segmentArray[], int currNode, int startIndex, int endIndex, int targetIndex) {
+    if (targetIndex == 1 && startIndex == endIndex) {
+      segmentArray[currNode] = 0;
+      return currNode;
+    }
+    int mid = (startIndex + endIndex) / 2;
+    int result = -1;
+    if (segmentArray[2 * currNode] >= targetIndex) {
+      result = lookUp(segmentArray, 2 * currNode, startIndex, mid, targetIndex);
+    } else {
+      result = lookUp(segmentArray, 2 * currNode + 1, mid + 1, endIndex, targetIndex - segmentArray[2 * currNode]);
+    }
+    segmentArray[currNode] = segmentArray[2 * currNode] + segmentArray[2 * currNode + 1];
+    return result;
+  }
+
+  static int getPow(int N) {
+    int result = 0;
+    while ((1 << result) < N) {
+      result++;
+    }
+    return 1 << result;
+  }
+
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int N = sc.nextInt();
+
+    int length = getPow(N);
+    int nums[] = new int[N];
+    int segmentArray[] = new int[2 * length + 1];
+
+    for (int index = 0; index < N; index++) {
+      nums[index] = sc.nextInt();
+      segmentArray[index + length] = 1;
+    }
+
+    for (int index = length - 1; index > 0; index--) {
+      segmentArray[index] = segmentArray[index * 2] + segmentArray[index * 2 + 1];
+    }
+
+    for (int index = 0; index < N; index++) {
+      System.out.print(nums[lookUp(segmentArray, 1, 1, length, sc.nextInt()) - length] + " ");
+    }
+
+    sc.close();
+  }
+}

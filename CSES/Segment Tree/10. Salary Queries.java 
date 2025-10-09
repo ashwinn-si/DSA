@@ -1,0 +1,91 @@
+import java.util.*;
+
+public class Main {
+  static int lookup(int segmentArray[], int currIndex, int nodeStart, int nodeEnd, int queryStart, int queryEnd) {
+    if (nodeEnd < queryStart || queryEnd < nodeStart) {
+      return 0;
+    }
+    if (nodeStart >= queryStart && nodeEnd <= queryEnd) {
+      return segmentArray[currIndex];
+    }
+    int mid = (nodeStart + nodeEnd) / 2;
+    return lookup(segmentArray, currIndex * 2, nodeStart, mid, queryStart, queryEnd)
+        + lookup(segmentArray, currIndex * 2 + 1, mid + 1, nodeEnd, queryStart, queryEnd);
+  }
+
+  static void update(int segmentArray[], int currIndex, int nodeStart, int nodeEnd, int queryStart, int queryEnd,
+      int updateVal) {
+    if (nodeEnd < queryStart || queryEnd < nodeStart) {
+      return;
+    }
+    if (nodeStart >= queryStart && nodeEnd <= queryEnd) {
+      segmentArray[currIndex] += updateVal;
+      return;
+    }
+    int mid = (nodeStart + nodeEnd) / 2;
+    update(segmentArray, currIndex * 2, nodeStart, mid, queryStart, queryEnd, updateVal);
+    update(segmentArray, currIndex * 2 + 1, mid + 1, nodeEnd, queryStart, queryEnd, updateVal);
+    segmentArray[currIndex] = segmentArray[currIndex * 2] + segmentArray[currIndex * 2 + 1];
+    return;
+  }
+
+  static int getPow(int N) {
+    int result = 0;
+    while ((1 << result) < N) {
+      result++;
+    }
+    return 1 << result;
+  }
+
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int N = sc.nextInt();
+    int Q = sc.nextInt();
+    sc.nextLine();
+    int originalSalary[] = new int[N];
+    int query[][] = new int[Q][3];
+    TreeSet<Integer> set = new TreeSet<>();
+    for (int index = 0; index < N; index++) {
+      originalSalary[index] = sc.nextInt();
+      set.add(originalSalary[index]);
+    }
+    for (int index = 0; index < Q; index++) {
+      char queryType = sc.next().charAt(0);
+      query[index][0] = queryType == '?' ? 1 : 2;
+      query[index][1] = sc.nextInt();
+      query[index][2] = sc.nextInt();
+      if (query[index][0] == 2) {
+        set.add(query[index][2]);
+      } else {
+        set.add(query[index][1]);
+        set.add(query[index][2]);
+      }
+    }
+    HashMap<Integer, Integer> rankHash = new HashMap<>();
+    int rank = 1;
+    for (int number : set) {
+      rankHash.put(number, rank++);
+    }
+    int length = getPow(set.size());
+    int segmentArray[] = new int[length * 2];
+    for (int index = 0; index < N; index++) {
+      int val = originalSalary[index];
+      segmentArray[length + rankHash.get(val) - 1]++;
+    }
+    for (int index = length - 1; index > 0; index--) {
+      segmentArray[index] = segmentArray[index * 2] + segmentArray[index * 2 + 1];
+    }
+    for (int index = 0; index < Q; index++) {
+      if (query[index][0] == 2) {
+        int originalRank = rankHash.get(originalSalary[query[index][1] - 1]) - 1;
+        update(segmentArray, 1, 0, length - 1, originalRank, originalRank, -1);
+        update(segmentArray, 1, 0, length - 1, rankHash.get(query[index][2]) - 1, rankHash.get(query[index][2]) - 1, 1);
+        originalSalary[query[index][1] - 1] = query[index][2];
+      } else {
+        System.out.println(lookup(segmentArray, 1, 0, length - 1, rankHash.get(query[index][1]) - 1,
+            rankHash.get(query[index][2]) - 1));
+      }
+    }
+    sc.close();
+  }
+}

@@ -55,8 +55,9 @@ class Solution {
   }
 }
 
-class Custom {
-  TreeNode node;
+poweroclass Custom {
+  Treeff
+  Node node;
   int level;
 
   Custom(TreeNode node, int level) {

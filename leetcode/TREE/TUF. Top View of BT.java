@@ -25,3 +25,38 @@ class Solution {
     return result;
   }
 }
+
+// DFS
+class Solution {
+  public List<Integer> topView(TreeNode root) {
+    // your code goes here
+    TreeMap<Integer, Integer> hash = new TreeMap<>();
+    Queue<Custom> queue = new LinkedList<>();
+    queue.add(new Custom(root, 0));
+    while (!queue.isEmpty()) {
+      Custom curr = queue.poll();
+      if (curr.node == null)
+        continue;
+      if (hash.get(curr.y) == null) {
+        hash.put(curr.y, curr.node.data);
+      }
+      queue.add(new Custom(curr.node.left, curr.y - 1));
+      queue.add(new Custom(curr.node.right, curr.y + 1));
+    }
+    List<Integer> res = new ArrayList<>();
+    for (int key : hash.keySet()) {
+      res.add(hash.get(key));
+    }
+    return res;
+  }
+}
+
+class Custom {
+  TreeNode node;
+  int y;
+
+  Custom(TreeNode node, int y) {
+    this.node = node;
+    this.y = y;
+  }
+}

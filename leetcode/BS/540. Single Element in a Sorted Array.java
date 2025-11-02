@@ -1,5 +1,4 @@
 class Solution {
-  
     public int singleNonDuplicate(int[] nums) {
         int st = 0;
         int end = nums.length - 1;

@@ -1,0 +1,1 @@
+select DISTINCT contest_id, COALESCE(100*ROUND(count(user_id) / (SELECT COUNT(*) from Users), 4)) as percentage from Register group by contest_id order by percentage desc, contest_id;

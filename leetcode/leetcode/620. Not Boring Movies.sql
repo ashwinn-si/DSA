@@ -1,1 +1,0 @@
-SELECT * FROM Cinema WHERE description NOT LIKE "%boring%" AND id % 2 = 1 order by rating desc;

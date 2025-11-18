@@ -1,1 +1,0 @@
-select name from Employee where id in (SELECT manager.id FROM Employee emp join Employee manager on emp.managerId = manager.id group by emp.managerId having count(emp.id) >= 5);
